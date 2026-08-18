@@ -1,0 +1,8 @@
+{
+  "name": "FanTik Coins",
+  "description": "FanTik Coins assistant and automated reward points collector.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

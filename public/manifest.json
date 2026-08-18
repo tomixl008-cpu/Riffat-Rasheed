@@ -1,0 +1,17 @@
+{
+  "short_name": "FanTik Coins",
+  "name": "FanTik Coins Automation",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' fill='%2310b981'><circle cx='96' cy='96' r='90' fill='%230f172a' stroke='%2310b981' stroke-width='10'/><circle cx='96' cy='96' r='60' fill='%2310b981'/><text x='96' y='120' font-size='80' font-weight='bold' text-anchor='middle' fill='%230f172a'>F</text></svg>",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#020617",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "portrait"
+}

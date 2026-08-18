@@ -10,47 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
-      - name: Install Dependencies
-        run: npm ci || npm install
+      - name: Install Node Dependencies
+        run: npm install --legacy-peer-deps
 
-      - name: Build Web Assets
+      - name: Build Web Application
         run: npm run build
 
-      - name: Setup Java JDK
+      - name: Setup Java JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: 17
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Initialize Capacitor Android
+      - name: Sync Capacitor Android
         run: |
-          npx cap init "FanTik Coins" "com.fantik.coins" --web-dir "dist" || true
-          npx cap add android || true
-          npx cap sync android || true
+          npx cap sync android
+
+      - name: Set Executable Permissions on gradlew
+        run: |
+          chmod +x ./android/gradlew
 
       - name: Build Debug APK with Gradle
         run: |
-          if [ -d "android" ]; then
-            cd android
-            chmod +x gradlew
-            ./gradlew assembleDebug --no-daemon
-          fi
+          cd android
+          ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK Artifact
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: FanTik-Coins-debug-apk
+          name: FanTik-Coins-APK
           path: android/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: warn
+          if-no-files-found: error

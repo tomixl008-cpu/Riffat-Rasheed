@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Node Dependencies
+      - name: Install Dependencies
         run: npm install --legacy-peer-deps
 
       - name: Build Web Application
@@ -33,18 +33,25 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Sync Capacitor Android
+      - name: Setup Gradle Build System
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Prepare Capacitor Android Platform
         run: |
+          if [ ! -d "android" ] || [ ! -f "android/build.gradle" ]; then
+            npx cap add android
+          fi
           npx cap sync android
 
-      - name: Set Executable Permissions on gradlew
-        run: |
-          chmod +x ./android/gradlew
-
-      - name: Build Debug APK with Gradle
+      - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          if [ -f "gradlew" ]; then
+            chmod +x gradlew
+            ./gradlew assembleDebug --no-daemon
+          else
+            gradle assembleDebug --no-daemon
+          fi
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4

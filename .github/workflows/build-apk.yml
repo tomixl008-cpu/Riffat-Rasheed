@@ -46,12 +46,8 @@ jobs:
       - name: Build Debug APK
         run: |
           cd android
-          if [ -f "gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug --no-daemon
-          else
-            gradle assembleDebug --no-daemon
-          fi
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
@@ -59,3 +55,16 @@ jobs:
           name: FanTik-Coins-APK
           path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
+      - name: Create Release
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Debug Build
+          files: android/app/build/outputs/apk/debug/*.apk
+          body: |
+            Automated build of FanTik Coins.
+            Generated on ${{ github.event.head_commit.timestamp }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

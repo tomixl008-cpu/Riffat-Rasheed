@@ -4,6 +4,7 @@ dist/
 .DS_Store
 *.iml
 .gradle/
+.gradle_home*
 .kotlin/
 /local.properties
 /.idea/
